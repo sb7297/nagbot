@@ -1,0 +1,8 @@
+{
+  "token": "[INSERT TOKEN HERE]",
+  "bot": {
+    "plugins": [
+      "plugins.activity_watcher"
+    ]
+  }
+}

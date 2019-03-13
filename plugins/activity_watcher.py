@@ -24,14 +24,16 @@ class ActivityWatcherPlugin(Plugin):
     def on_message_create(self, event):
         if event.message.author.id == self.bot.client.state.me.id:
             pass
-        elif self.data['message_counter'] < 5 : # TODO Make message threshold configurable
-            self.data['message_counter'] = self.data['message_counter'] + 1
+        elif not (event.message.author.id in self.data) :
+            self.data[event.message.author.id] = 1
+        elif self.data[event.message.author.id] < 5 : # TODO Make message threshold configurable
+            self.data[event.message.author.id] = self.data[event.message.author.id] + 1
         else :
             # TODO mute channe
             for key, value in event.guild.roles.items() : 
                 print(key, value.name) 
             event.guild.get_member(event.message.author).add_role(555220262510002179) # hardcoded "muted" role id
-            print(event.message.id)
+            # print(event.message.id)
             event.message.reply("お兄ちゃんのばか！")
-            self.data['message_counter'] = 0
-        print(event.message.author, self.data['message_counter'])
+            self.data[event.message.author.id] = 0
+        print(event.message.author, self.data[event.message.author.id])

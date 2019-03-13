@@ -5,7 +5,6 @@ from disco.bot import Plugin
 class ActivityWatcherPlugin(Plugin):
     def load(self, ctx):
         super(ActivityWatcherPlugin, self).load(ctx)
-        # do something with that...
         self.data = ctx
         if not self.data :
             self.data = {
@@ -25,10 +24,14 @@ class ActivityWatcherPlugin(Plugin):
     def on_message_create(self, event):
         if event.message.author.id == self.bot.client.state.me.id:
             pass
-        elif self.data['message_counter'] < 15 : # TODO Make message threshold configurable
+        elif self.data['message_counter'] < 5 : # TODO Make message threshold configurable
             self.data['message_counter'] = self.data['message_counter'] + 1
         else :
-            # TODO mute channel
+            # TODO mute channe
+            for key, value in event.guild.roles.items() : 
+                print(key, value.name) 
+            event.guild.get_member(event.message.author).add_role(555220262510002179) # hardcoded "muted" role id
+            print(event.message.id)
             event.message.reply("お兄ちゃんのばか！")
             self.data['message_counter'] = 0
         print(event.message.author, self.data['message_counter'])

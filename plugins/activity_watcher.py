@@ -2,26 +2,36 @@
 
 from disco.bot import Plugin
 from queue import Queue
+import gevent
 
 class ActivityWatcherPlugin(Plugin):
     def load(self, ctx):
         super(ActivityWatcherPlugin, self).load(ctx)
         self.data = ctx
-        self.muted = 555220262510002179 # hardcoded "muted" role id
-        self.threshold = 5
-        self.time_muted = 120
+        self.muted = 555580008673050643 # hardcoded "muted" role id
+        self.threshold = 75
+        self.time_muted = 3600
         self.user_queue = Queue()
         if not self.data :
             self.data = {}
 
     def unload(self, ctx):
         ctx = self.data
+        # TODO persist muting data
         super(ExamplePlugin, self).unload(ctx)
 
     @Plugin.command('ping')
     def command_ping(self, event):
         event.msg.reply('お兄ちゃん大好き')
-    
+
+# TODO Add ability for user to mute themself
+#@Plugin.command('muteme')
+ #   def command_muteme(self, event):
+  #      event.msg.reply("兄ちゃん偉い、偉い。" + str(self.time_muted / 60) + " minute time out.")
+    #    event.guild.get_member(event.msg.author).add_role(self.muted)
+   #     gevent.sleep(self.time_muted)
+     #   event.guild.get_member(event.msg.author).remove_role(self.muted)
+
     @Plugin.listen('MessageCreate')
     def on_message_create(self, event):
         if event.message.author.id == self.bot.client.state.me.id:
@@ -35,11 +45,11 @@ class ActivityWatcherPlugin(Plugin):
                 print(key, value.name) 
             event.guild.get_member(event.message.author).add_role(self.muted) 
             event.message.reply("お兄ちゃんのばか！" + str(self.time_muted / 60) + " minute time out!")
-            self.user_queue.put(event.guild.get_member(event.message.author))
             self.data[event.message.author.id] = 0
-            self.register_schedule(self.unmute, self.time_muted, init=False)
+            gevent.sleep(self.time_muted)
+            event.guild.get_member(event.message.author).remove_role(self.muted)
+
         print(event.message.author, self.data[event.message.author.id])
 
-    def unmute(self):
-        user = self.user_queue.get()
-        user.remove_role(self.muted)
+    def unmute(self, user):
+        print(self.user_queue)

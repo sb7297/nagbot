@@ -9,7 +9,7 @@ class ActivityWatcherPlugin(Plugin):
         super(ActivityWatcherPlugin, self).load(ctx)
         self.data = ctx
         self.muted = 555580008673050643 # hardcoded "muted" role id
-        self.threshold = 75
+        self.threshold = 22
         self.time_muted = 3600
         self.user_queue = Queue()
         if not self.data :

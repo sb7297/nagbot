@@ -11,7 +11,6 @@ class ActivityWatcherPlugin(Plugin):
         self.muted = 555580008673050643 # hardcoded "muted" role id
         self.threshold = 22
         self.time_muted = 3600
-        self.user_queue = Queue()
         if not self.data :
             self.data = {}
 
@@ -50,6 +49,3 @@ class ActivityWatcherPlugin(Plugin):
             event.guild.get_member(event.message.author).remove_role(self.muted)
 
         print(event.message.author, self.data[event.message.author.id])
-
-    def unmute(self, user):
-        print(self.user_queue)

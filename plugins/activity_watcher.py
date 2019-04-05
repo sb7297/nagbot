@@ -28,6 +28,7 @@ class ActivityWatcherPlugin(Plugin):
        def command_muteme(self, event):
            event.msg.reply("兄ちゃん偉い、偉い。" + str(self.time_muted / 60) + " minute time out.")
            event.guild.get_member(event.author).add_role(self.muted)
+           self.data[event.message.author.id] = 0
            gevent.sleep(self.time_muted)
            event.guild.get_member(event.author).remove_role(self.muted)
 

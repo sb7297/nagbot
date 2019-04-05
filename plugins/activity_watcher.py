@@ -25,12 +25,12 @@ class ActivityWatcherPlugin(Plugin):
 
 # TODO Add ability for user to mute themself
     @Plugin.command('muteme')
-       def command_muteme(self, event):
-           event.msg.reply("兄ちゃん偉い、偉い。" + str(self.time_muted / 60) + " minute time out.")
-           event.guild.get_member(event.author).add_role(self.muted)
-           self.data[event.message.author.id] = 0
-           gevent.sleep(self.time_muted)
-           event.guild.get_member(event.author).remove_role(self.muted)
+    def command_muteme(self, event):
+        event.msg.reply("兄ちゃん偉い、偉い。" + str(self.time_muted / 60) + " minute time out.")
+        event.guild.get_member(event.author).add_role(self.muted)
+        self.data[event.message.author.id] = 0
+        gevent.sleep(self.time_muted)
+        event.guild.get_member(event.author).remove_role(self.muted)
 
     @Plugin.listen('MessageCreate')
     def on_message_create(self, event):
